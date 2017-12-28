@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -5,7 +7,7 @@ type Brad = {
   name: string
 }
 
-export default class App extends React.Component {
+export default class App extends React.Component<Brad> {
   render() {
     return (
       <View style={styles.container}>

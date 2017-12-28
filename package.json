@@ -5,6 +5,7 @@
   "devDependencies": {
     "babel-preset-react-native": "2.1.0",
     "flow-bin": "0.61.0",
+    "flow-typed": "2.2.3",
     "jest-expo": "23.0.0",
     "react-native-scripts": "1.8.1",
     "react-test-renderer": "16.0.0"
@@ -16,7 +17,8 @@
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
     "test": "node node_modules/jest/bin/jest.js --watch",
-    "flow": "flow"
+    "flow": "flow",
+    "ft-install": "flow-typed install"
   },
   "jest": {
     "preset": "jest-expo"
