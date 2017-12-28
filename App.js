@@ -3,11 +3,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-type Brad = {
-  name: string
-}
+type Props = {}
 
-export default class App extends React.Component<Brad> {
+export default class App extends React.Component<Props> {
   render() {
     return (
       <View style={styles.container}>
