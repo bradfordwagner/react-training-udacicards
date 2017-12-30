@@ -1,5 +1,5 @@
 # react-training-udacicards
-`bradfordwagner`'s submission of udacicards for react-native udacity training.
+`bradfordwagner`'s submission of udacicards for react-native udacity training. This was tested using `ios`.
 
 ## Setup
 ```
