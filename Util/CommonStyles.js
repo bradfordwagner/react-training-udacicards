@@ -1,3 +1,5 @@
+// @flow
+
 import { StyleSheet } from 'react-native';
 
 export const Uno1 = "#d6e9ff"

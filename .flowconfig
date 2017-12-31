@@ -6,6 +6,8 @@ node_modules/react-native/flow
 [ignore]
 .*/node_modules/reqwest/.*
 .*/node_modules/react-native/Libraries/.*
+.*/node_modules/react-native-tab-view/.*
+.*/node_modules/react-navigation/.*
 
 [options]
 module.file_ext=.js
