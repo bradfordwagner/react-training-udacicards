@@ -31,7 +31,7 @@ export class DeckListViewContainer extends React.Component<Props, State> {
 
     render = () => (
         <View>
-            <DeckSummary deck={DefaultDeck} />
+            <DeckSummary deck={DefaultDeck} onPress={() => console.info("deck summary pressed")} />
             <Button title="Add Deck" onPress={() => console.info("Adding a deck maybe")} />
         </View>
     )
