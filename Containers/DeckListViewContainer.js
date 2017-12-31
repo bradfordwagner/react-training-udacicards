@@ -4,7 +4,7 @@ import React from 'react';
 import { View, Text, Button } from 'react-native';
 import { loadDecks } from '../Util/Storeage';
 import { Deck } from '../Lib/Deck';
-import { CommonStyles } from '../Util/CommonStyles';
+import { BackgroundColors } from '../Util/CommonStyles';
 import { DeckSummary } from '../Components/DeckSummary';
 
 type Props = {}

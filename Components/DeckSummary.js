@@ -1,6 +1,12 @@
 import React from 'react';
 import { Text, View, TouchableHighlight } from 'react-native';
-import { CommonStyles, CrossAlignment } from '../Util/CommonStyles';
+import {
+    BackgroundColors,
+    HorizontalAlignment,
+    TextAlignment,
+    TextStyle,
+    CardStyle
+} from '../Util/CommonStyles';
 import { Deck } from '../Lib/Deck';
 
 export type DeckSummaryProps = {
@@ -10,10 +16,11 @@ export type DeckSummaryProps = {
 
 export const DeckSummary = ({ deck }: DeckSummaryProps) => {
     return (
-        <TouchableHighlight style={CommonStyles.red}>
-            <View>
-                <Text style={[CrossAlignment.centered]}>{deck.title}</Text>
-                <Text>{deck.questionIds.length}</Text>
+        <TouchableHighlight>
+        {/* <TouchableHighlight style={BackgroundColors.Red}> */}
+            <View style={[CardStyle.Default]} >
+                <Text style={[TextAlignment.Center, TextStyle.Title]}>{deck.title}</Text>
+                <Text style={[TextAlignment.Center, TextStyle.SubText]}>{deck.questionIds.length} cards</Text>
             </View>
         </TouchableHighlight>
     );
