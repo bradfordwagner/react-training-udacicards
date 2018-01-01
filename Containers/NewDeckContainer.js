@@ -102,8 +102,6 @@ export class NewDeckContainer extends Component<Props, State> {
                                 showDelete={true}
                             />
                         ))}
-
-                        <Text>{JSON.stringify(this.state.deck)}</Text>
                     </View>
                     <ActionBar actions={this.buildActions()} />
                 </View>
