@@ -2,6 +2,8 @@
 import type { NavigationProps } from '../Lib/Navigation';
 import type { NewDeckNavigationProps } from './NewDeckContainer';
 import type { Action } from '../Components/ActionBar'
+import type { IndividualDeckViewContainerNavigationProps } from './IndividualDeckViewContainer'
+
 
 import React from 'react';
 import { View, Text, Button, ScrollView } from 'react-native';
@@ -49,7 +51,8 @@ export class DeckListViewContainer extends React.Component<Props, State> {
     }
 
     openDeckView = (deck: Deck) => {
-        console.info("opening deck view", deck);
+        const params: IndividualDeckViewContainerNavigationProps = { afterEdit: () => this.forceUpdate(), deck }
+        this.props.navigation.navigate(States.IndividualDeckView, params)
     }
 
     render = () => (
