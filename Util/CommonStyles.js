@@ -8,9 +8,9 @@ export const Uno3 = "#5d8cc0"
 export const Uno4 = "#586f89"
 export const Uno5 = "#444c55"
 
-export const Duo1 = "34febb"
-export const Duo2 = "32ae85"
-export const Duo3 = "42675a"
+export const Duo1 = "#34febb"
+export const Duo2 = "#32ae85"
+export const Duo3 = "#42675a"
 
 export const BackgroundColors = StyleSheet.create({
     Red: {
@@ -21,6 +21,9 @@ export const BackgroundColors = StyleSheet.create({
 export const Layout = StyleSheet.create({
     Flex: {
         flex: 1
+    },
+    Flex2: {
+        flex: 2
     },
     Row: {
         flexDirection: "row"
@@ -45,6 +48,9 @@ export const HorizontalAlignment = StyleSheet.create({
     },
     Center: {
         justifyContent: "center"
+    },
+    SpaceBetween: {
+        justifyContent: "space-between"
     }
 })
 

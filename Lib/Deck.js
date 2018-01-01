@@ -9,6 +9,7 @@ export class Deck {
 }
 
 export class Question {
+    uuid: string = UUID()
     question: string = ""
     answer: string = ""
 }
