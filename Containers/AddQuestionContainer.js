@@ -42,6 +42,7 @@ export class AddQuestionContainer extends Component<Props, State> {
             />
             <Button
                 title="Add"
+                color="green"
                 onPress={this.addQuestion}
             />
         </View>
