@@ -55,7 +55,11 @@ export class NewDeckContainer extends Component<Props, State> {
 
     editQuestion = (question: Question) => console.info("edit question", question)
 
-    deleteQuestion = (question: Question) => console.info("deleting question", question)
+    deleteQuestion = (question: Question) => {
+        const deck = this.state.deck
+        deck.questions = deck.questions.filter(q => q.uuid !== question.uuid)
+        this.setState({ deck })
+    }
 
     create = () => console.info("Create!");
 
