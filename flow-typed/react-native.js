@@ -1,6 +1,7 @@
 declare module 'react-native' {
 	declare export var StyleSheet: any
 	declare export var Text: any
+	declare export var TextInput: any
 	declare export var View: any
 	declare export var Button: any
 

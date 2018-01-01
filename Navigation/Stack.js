@@ -5,10 +5,9 @@ import { StackNavigator } from 'react-navigation';
 import { States } from './NavigationStates';
 import { DeckListViewContainer } from '../Containers/DeckListViewContainer';
 import { Text } from 'react-native';
-
-const AddDeckView = () => (<Text>Add Deck View</Text>)
+import { NewDeckContainer } from '../Containers/NewDeckContainer';
 
 export const Stack = StackNavigator({
-    [States.DeckListView]: { screen: DeckListViewContainer },
-    [States.AddDeck]: { screen: AddDeckView }
+    [States.AddDeck]: { screen: NewDeckContainer },
+    [States.DeckListView]: { screen: DeckListViewContainer }
 })
