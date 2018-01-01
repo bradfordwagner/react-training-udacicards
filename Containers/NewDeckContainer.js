@@ -53,7 +53,7 @@ export class NewDeckContainer extends Component<Props, State> {
 
     addQuestion = () => this.props.navigation.navigate(States.AddQuestion, ({ deck: this.state.deck, onAdd: () => this.rerender() }: AddQuestionContainerParams))
 
-    editQuestion = (question: Question) => console.info("edit question", question)
+    editQuestion = (question: Question) => console.info("edit question - we may never implement this :P", question)
 
     deleteQuestion = (question: Question) => {
         const deck = this.state.deck
