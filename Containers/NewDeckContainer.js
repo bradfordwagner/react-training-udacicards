@@ -5,7 +5,7 @@ import type { AddQuestionContainerParams } from "./AddQuestionContainer"
 import type { Action } from "../Components/ActionBar"
 
 import React, { Component } from 'react';
-import { Text, View, TextInput, Button } from 'react-native';
+import { Text, View, TextInput, Button, ActivityIndicator } from 'react-native';
 import {
     BackgroundColors,
     TextStyle,
@@ -13,7 +13,8 @@ import {
     Duo1,
     Duo2,
     Duo3,
-    Layout
+    Layout,
+    VerticalAlignment
 } from '../Util/CommonStyles';
 import { Deck, Question } from '../Lib/Deck';
 import { TextBox } from '../Components/TextBox';
@@ -22,26 +23,24 @@ import { States } from '../Navigation/NavigationStates';
 import { AddQuestionContainer } from './AddQuestionContainer';
 import { ActionBar } from '../Components/ActionBar';
 import { Ionicons } from "@expo/vector-icons";
+import * as Storeage from "../Util/Storeage"
 
 type Props = {
-    navigation: NavigationProps<any>
+    navigation: NavigationProps<Deck>
 }
 type State = {
+    isLoading: boolean,
     deck: Deck
 }
 
 export class NewDeckContainer extends Component<Props, State> {
     state = {
+        isLoading: true,
         deck: new Deck()
     }
 
     componentDidMount = () => {
-        const q = new Question()
-        q.question = "Is Bradford the best?aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaa aaaaaaaa"
-        q.answer = "Yes he is indeed the bestest"
-        this.state.deck.questions.push(q)
-        const deck = this.state.deck
-        this.setState({ deck })
+        Storeage.loadEditingDeck().then(deck => this.setState({ deck, isLoading: false }))
     }
 
     updateTitle = (title: string) => {
@@ -50,7 +49,9 @@ export class NewDeckContainer extends Component<Props, State> {
         this.setState({ deck })
     }
 
-    addQuestion = () => this.props.navigation.navigate(States.AddQuestion, ({ deck: this.state.deck }: AddQuestionContainerParams))
+    rerender = () => this.forceUpdate()
+
+    addQuestion = () => this.props.navigation.navigate(States.AddQuestion, ({ deck: this.state.deck, rerender: () => this.rerender() }: AddQuestionContainerParams))
 
     editQuestion = (question: Question) => console.info("edit question", question)
 
@@ -61,8 +62,7 @@ export class NewDeckContainer extends Component<Props, State> {
     buildActions = () => {
         const addQuestion: Action = {
             icon: <Ionicons name="ios-add" size={22} />,
-            // onPress: () => this.addQuestion()
-            onPress: () => console.info("Add Question")
+            onPress: () => this.addQuestion()
         }
 
         const create: Action = {
@@ -74,28 +74,36 @@ export class NewDeckContainer extends Component<Props, State> {
     }
 
     render() {
-        return (
-            <View style={[Layout.Flex]}>
-                <View style={[Layout.Column, Layout.Flex]}>
-                    <TextBox
-                        placeholder="Title"
-                        value={this.state.deck.title}
-                        onChange={(title) => this.updateTitle(title)}
-                    />
-                    {this.state.deck.questions.map(question => (
-                        <QuestionSummary
-                            key={question.uuid}
-                            question={question}
-                            onPress={() => this.editQuestion(question)}
-                            onDeletePress={() => this.deleteQuestion(question)}
-                            showDelete={true}
-                        />
-                    ))}
-
-                    <Text>{JSON.stringify(this.state.deck)}</Text>
+        if (this.state.isLoading) {
+            return (
+                <View style={[Layout.Flex, VerticalAlignment.Center]}>
+                    <ActivityIndicator size="large" />
                 </View>
-                <ActionBar actions={this.buildActions()} />
-            </View>
-        );
+            )
+        } else {
+            return (
+                <View style={[Layout.Flex]}>
+                    <View style={[Layout.Column, Layout.Flex]}>
+                        <TextBox
+                            placeholder="Title"
+                            value={this.state.deck.title}
+                            onChange={(title) => this.updateTitle(title)}
+                        />
+                        {this.state.deck.questions.map(question => (
+                            <QuestionSummary
+                                key={question.uuid}
+                                question={question}
+                                onPress={() => this.editQuestion(question)}
+                                onDeletePress={() => this.deleteQuestion(question)}
+                                showDelete={true}
+                            />
+                        ))}
+
+                        <Text>{JSON.stringify(this.state.deck)}</Text>
+                    </View>
+                    <ActionBar actions={this.buildActions()} />
+                </View>
+            )
+        }
     }
 }

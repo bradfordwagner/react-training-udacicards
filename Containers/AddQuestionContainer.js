@@ -1,14 +1,17 @@
 // @flow
 import type { NavigationProps } from '../Lib/Navigation'
+import type { Action } from '../Components/ActionBar';
 
 import React, { Component } from 'react';
 import { Text, View, Button } from 'react-native';
 import { Deck, Question } from '../Lib/Deck';
 import { TextBox } from '../Components/TextBox';
 import { Layout } from '../Util/CommonStyles';
+import { ActionBar } from '../Components/ActionBar';
 
 export type AddQuestionContainerParams = {
-    deck: Deck
+    deck: Deck,
+    rerender: Function
 }
 
 type Props = {
@@ -26,25 +29,40 @@ export class AddQuestionContainer extends Component<Props, State> {
         answer: ""
     }
 
-    addQuestion = () => console.info("Add Question")
+    addQuestion = () => {
+        const q = new Question()
+        q.question = this.state.question
+        q.answer = this.state.answer
+        const deck = this.props.navigation.state.params.deck
+        deck.questions.push(q)
+        this.props.navigation.goBack()
+        this.props.navigation.state.params.rerender()
+    }
+
+    buildActions = () => {
+        const addQuestion: Action = {
+            title: "Add Question",
+            onPress: () => this.addQuestion()
+        }
+        return [addQuestion]
+    }
 
     render = () => (
-        <View style={Layout.Column}>
-            <TextBox
-                value={this.state.question}
-                onChange={(question) => this.setState({ question })}
-                placeholder="Question"
-            />
-            <TextBox
-                value={this.state.answer}
-                onChange={(answer) => this.setState({ answer })}
-                placeholder="Answer"
-            />
-            <Button
-                title="Add"
-                color="green"
-                onPress={this.addQuestion}
-            />
+        <View style={Layout.Colum, Layout.Flex}>
+            <View style={[Layout.Flex]}>
+                <TextBox
+                    value={this.state.question}
+                    onChange={(question) => this.setState({ question })}
+                    placeholder="Question"
+                />
+                <TextBox
+                    value={this.state.answer}
+                    onChange={(answer) => this.setState({ answer })}
+                    placeholder="Answer"
+                />
+            </View>
+
+            <ActionBar actions={this.buildActions()} />
         </View>
     )
 }
