@@ -1,9 +1,9 @@
+// @flow
+
 import React from 'react'
 import { Question } from "../Lib/Deck";
 import { Text, TouchableHighlight, View, Button, StyleSheet } from 'react-native';
 import { CardStyle, Uno1, Layout, HorizontalAlignment, TextAlignment } from '../Util/CommonStyles';
-
-// @flow
 
 export type QuestionSummaryProps = {
     question: Question,

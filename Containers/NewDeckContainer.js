@@ -1,13 +1,20 @@
 // @flow
 
+import type { NavigationProps } from "../Lib/Navigation"
+import type { AddQuestionContainerParams } from "./AddQuestionContainer"
+
 import React, { Component } from 'react';
 import { Text, View, TextInput, Button } from 'react-native';
 import { BackgroundColors, TextStyle, TextAlignment, Duo1, Duo2, Duo3 } from '../Util/CommonStyles';
 import { Deck, Question } from '../Lib/Deck';
 import { TextBox } from '../Components/TextBox';
 import { QuestionSummary } from '../Components/QuestionSummary';
+import { States } from '../Navigation/NavigationStates';
+import { AddQuestionContainer } from './AddQuestionContainer';
 
-type Props = {}
+type Props = {
+    navigation: NavigationProps<any>
+}
 type State = {
     deck: Deck
 }
@@ -32,6 +39,8 @@ export class NewDeckContainer extends Component<Props, State> {
         this.setState({ deck })
     }
 
+    addQuestion = () => this.props.navigation.navigate(States.AddQuestion, ({ deck: this.state.deck }: AddQuestionContainerParams))
+
     editQuestion = (question: Question) => console.info("edit question", question)
 
     deleteQuestion = (question: Question) => console.info("deleting question", question)
@@ -45,7 +54,7 @@ export class NewDeckContainer extends Component<Props, State> {
                     onChange={(title) => this.updateTitle(title)}
                 />
                 <Text style={[TextStyle.SubText, TextAlignment.Center]}>Questions</Text>
-                <Button title="Add Question" color={Duo2} onPress={() => console.info("Adding a question")} />
+                <Button title="Add Question" color={Duo2} onPress={this.addQuestion} />
                 {this.state.deck.questions.map(question => (
                     <QuestionSummary
                         key={question.uuid}
