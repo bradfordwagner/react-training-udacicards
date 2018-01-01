@@ -6,6 +6,7 @@ declare module 'react-native' {
 	declare export var View: any
 	declare export var Button: any
 	declare export var TouchableHighlight: any
+	declare export var ActivityIndicator: any
 
 	declare export var AsyncStorage: {|
 		/**
