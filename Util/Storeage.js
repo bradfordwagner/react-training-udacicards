@@ -6,8 +6,6 @@ import type { DeckStoreage } from "../Lib/Deck"
 
 const DecksKey = "bradfordwagner-TrainingCards-decks"
 
-const EditingKey = "bradfordwagner-TrainingCards-editingDeck"
-
 export const saveDeck = (deck: Deck) => {
     return AsyncStorage.mergeItem(DecksKey, JSON.stringify({ [deck.uuid]: deck }))
 }
