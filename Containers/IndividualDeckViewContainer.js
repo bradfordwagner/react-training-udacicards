@@ -3,6 +3,7 @@
 import type { NavigationProps } from "../Lib/Navigation"
 import type { Action } from "../Components/ActionBar"
 import type { AddQuestionContainerParams } from "../Containers/AddQuestionContainer"
+import type { QuizParams } from "../Containers/QuizContainer"
 
 import React from 'react'
 import { View, Text } from 'react-native';
@@ -27,7 +28,12 @@ export class IndividualDeckViewContainer extends React.Component<Props, State> {
 
     getDeck = () => this.props.navigation.state.params.deck
 
-    startQuiz = () => console.info("starting quiz")
+    startQuiz = () => {
+        const params: QuizParams = {
+            deck: this.getDeck()
+        }
+        this.props.navigation.navigate(States.Quiz, params)
+    }
 
     addQuestion = () => {
         const params: AddQuestionContainerParams = {
