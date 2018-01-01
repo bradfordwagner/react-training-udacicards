@@ -31,7 +31,6 @@ export class DeckListViewContainer extends React.Component<Props, State> {
 
     reloadDecks = () => {
         Storeage.loadDecks().then(decks => {
-            console.info("loaded decks", decks);
             this.setState({ decks })
         })
     }
@@ -49,11 +48,15 @@ export class DeckListViewContainer extends React.Component<Props, State> {
         return [createDeck]
     }
 
+    openDeckView = (deck: Deck) => {
+        console.info("opening deck view", deck);
+    }
+
     render = () => (
         <View style={[Layout.Flex]}>
             <ScrollView style={[Layout.Flex]}>
                 {this.state.decks.map((deck, index) => (
-                    <DeckSummary key={deck.uuid} deck={this.state.decks[index]} onPress={() => console.info("deck summary pressed")} />
+                    <DeckSummary key={deck.uuid} deck={this.state.decks[index]} onPress={() => this.openDeckView(deck)} />
                 ))}
             </ScrollView>
             <ActionBar actions={this.buildActions()} />
