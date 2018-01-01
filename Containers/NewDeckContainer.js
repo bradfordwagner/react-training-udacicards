@@ -2,15 +2,26 @@
 
 import type { NavigationProps } from "../Lib/Navigation"
 import type { AddQuestionContainerParams } from "./AddQuestionContainer"
+import type { Action } from "../Components/ActionBar"
 
 import React, { Component } from 'react';
 import { Text, View, TextInput, Button } from 'react-native';
-import { BackgroundColors, TextStyle, TextAlignment, Duo1, Duo2, Duo3 } from '../Util/CommonStyles';
+import {
+    BackgroundColors,
+    TextStyle,
+    TextAlignment,
+    Duo1,
+    Duo2,
+    Duo3,
+    Layout
+} from '../Util/CommonStyles';
 import { Deck, Question } from '../Lib/Deck';
 import { TextBox } from '../Components/TextBox';
 import { QuestionSummary } from '../Components/QuestionSummary';
 import { States } from '../Navigation/NavigationStates';
 import { AddQuestionContainer } from './AddQuestionContainer';
+import { ActionBar } from '../Components/ActionBar';
+import { Ionicons } from "@expo/vector-icons";
 
 type Props = {
     navigation: NavigationProps<any>
@@ -45,29 +56,45 @@ export class NewDeckContainer extends Component<Props, State> {
 
     deleteQuestion = (question: Question) => console.info("deleting question", question)
 
+    create = () => console.info("Create!");
+
+    buildActions = () => {
+        const addQuestion: Action = {
+            icon: <Ionicons name="ios-add" size={22} />,
+            // onPress: () => this.addQuestion()
+            onPress: () => console.info("Add Question")
+        }
+
+        const create: Action = {
+            title: "Create",
+            onPress: () => this.create()
+        }
+
+        return [addQuestion, create]
+    }
+
     render() {
         return (
-            <View>
-                <TextBox
-                    placeholder="Title"
-                    value={this.state.deck.title}
-                    onChange={(title) => this.updateTitle(title)}
-                />
-                <Text style={[TextStyle.SubText, TextAlignment.Center]}>Questions</Text>
-                <Button title="Add Question" color={Duo2} onPress={this.addQuestion} />
-                {this.state.deck.questions.map(question => (
-                    <QuestionSummary
-                        key={question.uuid}
-                        question={question}
-                        onPress={() => this.editQuestion(question)}
-                        onDeletePress={() => this.deleteQuestion(question)}
-                        showDelete={true}
+            <View style={[Layout.Flex]}>
+                <View style={[Layout.Column, Layout.Flex]}>
+                    <TextBox
+                        placeholder="Title"
+                        value={this.state.deck.title}
+                        onChange={(title) => this.updateTitle(title)}
                     />
-                ))}
+                    {this.state.deck.questions.map(question => (
+                        <QuestionSummary
+                            key={question.uuid}
+                            question={question}
+                            onPress={() => this.editQuestion(question)}
+                            onDeletePress={() => this.deleteQuestion(question)}
+                            showDelete={true}
+                        />
+                    ))}
 
-                <Button title="Create" onPress={() => console.info("Create!")} />
-
-                <Text>{JSON.stringify(this.state.deck)}</Text>
+                    <Text>{JSON.stringify(this.state.deck)}</Text>
+                </View>
+                <ActionBar actions={this.buildActions()} />
             </View>
         );
     }

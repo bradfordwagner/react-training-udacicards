@@ -51,6 +51,9 @@ export const HorizontalAlignment = StyleSheet.create({
     },
     SpaceBetween: {
         justifyContent: "space-between"
+    },
+    SpaceAround: {
+        justifyContent: "space-around"
     }
 })
 
@@ -77,12 +80,23 @@ export const CardStyle = {
         shadowOpacity: 0.8,
         shadowColor: 'rgba(0, 0, 0, 0.24)',
         shadowOffset: {
-          width: 0,
-          height: 3
+            width: 0,
+            height: 3
         },
         borderRadius: 16,
         backgroundColor: "white",
         margin: 10,
         padding: 10
-    }    
+    },
+    BottomCard: {
+        shadowRadius: 3,
+        shadowOpacity: 0.8,
+        shadowColor: 'rgba(0, 0, 0, 0.24)',
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        backgroundColor: "white",
+        padding: 10
+    }
 }
