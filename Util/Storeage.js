@@ -15,23 +15,10 @@ export const saveDeck = (deck: Deck) => {
 export const loadDecks = () => {
     return AsyncStorage.getItem(DecksKey).then(res => {
         const storeage: DeckStoreage = JSON.parse(res)
-        return storeage ? Object.values(storeage) : []
+        return storeage ? parseStoreage(storeage) : []
     })
 }
 
-export const saveEditingDeck = (deck: Deck) => {
-    return AsyncStorage.setItem(EditingKey, JSON.stringify(deck))
-}
-
-export const loadEditingDeck = () => {
-    console.info("loadEditingDeck");
-    return AsyncStorage.getItem(EditingKey).then(res => {
-        const deck: Deck = JSON.parse(res)
-        console.info("found editing deck", deck);
-        return deck ? deck : new Deck()
-    })
-}
-
-export const clearEditingDeck = () => {
-    return AsyncStorage.removeItem(EditingKey)
+function parseStoreage(storeage: DeckStoreage): Deck[] {
+    return Object.keys(storeage).map(key => storeage[key])
 }

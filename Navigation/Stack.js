@@ -9,7 +9,7 @@ import { NewDeckContainer } from '../Containers/NewDeckContainer';
 import { AddQuestionContainer } from '../Containers/AddQuestionContainer';
 
 export const Stack = StackNavigator({
-    [States.AddDeck]: { screen: NewDeckContainer },
     [States.DeckListView]: { screen: DeckListViewContainer },
+    [States.AddDeck]: { screen: NewDeckContainer },
     [States.AddQuestion]: { screen: AddQuestionContainer },
 })
