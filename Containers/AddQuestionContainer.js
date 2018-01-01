@@ -11,7 +11,7 @@ import { ActionBar } from '../Components/ActionBar';
 
 export type AddQuestionContainerParams = {
     deck: Deck,
-    rerender: Function
+    onAdd: Function
 }
 
 type Props = {
@@ -21,7 +21,6 @@ type State = {
     question: string,
     answer: string
 }
-
 
 export class AddQuestionContainer extends Component<Props, State> {
     state = {
@@ -36,7 +35,7 @@ export class AddQuestionContainer extends Component<Props, State> {
         const deck = this.props.navigation.state.params.deck
         deck.questions.push(q)
         this.props.navigation.goBack()
-        this.props.navigation.state.params.rerender()
+        this.props.navigation.state.params.onAdd()
     }
 
     buildActions = () => {
