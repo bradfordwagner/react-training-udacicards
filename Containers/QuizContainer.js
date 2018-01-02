@@ -45,11 +45,16 @@ export class QuizContainer extends React.Component<Props, State> {
         if (deck.questions.length == 0) {
             this.goBack()
         } else {
-            const currentQuestion = deck.questions[this.state.currentIndex]
-            const remainingQuestions = deck.questions.length - 1
-            const progress = 1 / deck.questions.length
-            this.setState({ currentQuestion, remainingQuestions, progress })
+            this.restartQuiz()
         }
+    }
+
+    restartQuiz = () => {
+        const deck = this.getDeck()
+        const currentQuestion = deck.questions[this.state.currentIndex]
+        const remainingQuestions = deck.questions.length - 1
+        const progress = 1 / deck.questions.length
+        this.setState({ currentQuestion, remainingQuestions, progress })
     }
 
     getDeck = () => this.props.navigation.state.params.deck
@@ -136,6 +141,11 @@ export class QuizContainer extends React.Component<Props, State> {
             deckName={this.getDeck().title}
             correctAnswersCount={this.state.correctAnswers}
             totalQuestions={this.getDeck().questions.length}
+            goBack={this.goBack}
+            restartQuiz={() => {
+                this.restartQuiz()
+                this.forceUpdate()
+            }}
         />
     )
 }

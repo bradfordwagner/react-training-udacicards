@@ -9,6 +9,7 @@ declare module 'react-native' {
 	declare export var ActivityIndicator: any
 	declare export var ScrollView: any
 	declare export var ProgressViewIOS: any
+	declare export var Animated: any
 
 	declare export var AsyncStorage: {|
 		/**
@@ -20,7 +21,7 @@ declare module 'react-native' {
 		 * @returns A `Promise` object.
 		 */
 		getItem(key: string, callback?: ?(error: ?Error, result: ?string) => void): Promise<string>,
-	
+
 		/**
 		 * Sets the value for a `key` and invokes a callback upon completion.
 		 * Returns a `Promise` object.
@@ -30,11 +31,11 @@ declare module 'react-native' {
 		 * @returns A `Promise` object.
 		 */
 		setItem(
-		  key: string,
-		  value: string,
-		  callback?: ?(error: ?Error) => void,
+			key: string,
+			value: string,
+			callback?: ?(error: ?Error) => void,
 		): Promise<typeof undefined>,
-	
+
 		/**
 		 * Removes an item for a `key` and invokes a callback upon completion.
 		 * Returns a `Promise` object.
@@ -43,7 +44,7 @@ declare module 'react-native' {
 		 * @returns A `Promise` object.
 		 */
 		removeItem(key: string, callback?: ?(error: ?Error) => void): Promise<typeof undefined>,
-	
+
 		/**
 		 * Merges an existing `key` value with an input value, assuming both values
 		 * are stringified JSON. Returns a `Promise` object.
@@ -80,11 +81,11 @@ declare module 'react-native' {
 		 * //    {'shoe_size':10,'hair':'brown','eyes':'blue'}}
 		 */
 		mergeItem(
-		  key: string,
-		  value: string,
-		  callback?: ?(error: ?Error) => void,
+			key: string,
+			value: string,
+			callback?: ?(error: ?Error) => void,
 		): Promise<typeof undefined>,
-	
+
 		/**
 		 * Erases *all* `AsyncStorage` for all clients, libraries, etc.  You probably
 		 * don't want to call this; use `removeItem` or `multiRemove` to clear only
@@ -92,8 +93,8 @@ declare module 'react-native' {
 		 * @param callback Function that will be called with any error.
 		 * @returns A `Promise` object.
 		 */
-		clear(callback?: ?(error: ?Error) => void): Promise<typeof undefined>,
-	
+		clear(callback ?: ? (error: ?Error) => void): Promise<typeof undefined>,
+
 		/**
 		 * Gets *all* keys known to your app; for all callers, libraries, etc.
 		 * Returns a `Promise` object.
@@ -103,7 +104,7 @@ declare module 'react-native' {
 		 * Example: see the `multiGet` example.
 		 */
 		getAllKeys(callback?: ?(error: ?Error, keys: ?Array<string>) => void): Promise<Array<string>>,
-	
+
 		/**
 		 * The following batched functions are useful for executing a lot of
 		 * operations at once, allowing for native optimizations and provide the
@@ -113,10 +114,10 @@ declare module 'react-native' {
 		 * For key-specific errors, the Error object will have a key property to
 		 * indicate which key caused the error.
 		 */
-	
+
 		/** Flushes any pending requests using a single batch call to get the data. */
 		flushGetRequests(): void,
-	
+
 		/**
 		 * This allows you to batch the fetching of items given an array of `key`
 		 * inputs. Your callback will be invoked with an array of corresponding
@@ -134,22 +135,22 @@ declare module 'react-native' {
 		 * @returns A `Promise` object.
 		 *
 		 * @example <caption>Example</caption>
-		 *
+				*
 		 * AsyncStorage.getAllKeys((err, keys) => {
-		 *   AsyncStorage.multiGet(keys, (err, stores) => {
-		 *    stores.map((result, i, store) => {
+		 * AsyncStorage.multiGet(keys, (err, stores) => {
+		 * stores.map((result, i, store) => {
 		 *      // get at each store's key/value so you can work with it
-		 *      let key = store[i][0];
-		 *      let value = store[i][1];
+		 * let key = store[i][0];
+		 * let value = store[i][1];
 		 *     });
 		 *   });
-		 * });
+				* });
 		 */
 		multiGet(
 		  keys: Array<string>,
 		  callback?: ?(errors: ?Array<Error>, result: ?Array<Array<string>>) => void,
 		): Promise<Array<string>>,
-	
+
 		/**
 		 * Use this as a batch operation for storing multiple key-value pairs. When
 		 * the operation completes you'll get a single callback with any errors:
@@ -170,7 +171,7 @@ declare module 'react-native' {
 		  keyValuePairs: Array<Array<string>>,
 		  callback?: ?(errors: ?Array<Error>) => void,
 		): Promise<typeof undefined>,
-	
+
 		/**
 		 * Call this to batch the deletion of all keys in the `keys` array. Returns
 		 * a `Promise` object.
@@ -181,7 +182,7 @@ declare module 'react-native' {
 		 * @returns A `Promise` object.
 		 *
 		 * @example <caption>Example</caption>
-		 * let keys = ['k1', 'k2'];
+								* let keys = ['k1', 'k2'];
 		 * AsyncStorage.multiRemove(keys, (err) => {
 		 *   // keys k1 & k2 removed, if they existed
 		 *   // do most stuff after removal (if you want)
@@ -191,7 +192,7 @@ declare module 'react-native' {
 		  keys: Array<string>,
 		  callback?: ?(errors: ?Array<Error>) => void,
 		): Promise<typeof undefined>,
-	
+
 		/**
 		 * Batch operation to merge in existing and new values for a given set of
 		 * keys. This assumes that the values are stringified JSON. Returns a
@@ -205,29 +206,29 @@ declare module 'react-native' {
 		 * @returns A `Promise` object.
 		 *
 		 * @example <caption>Example</caption>
-		 * // first user, initial values
+											* // first user, initial values
 		 * let UID234_object = {
-		 *  name: 'Chris',
+		 * name: 'Chris',
 		 *  age: 30,
 		 *  traits: {hair: 'brown', eyes: 'brown'},
 		 * };
 		 *
 		 * // first user, delta values
 		 * let UID234_delta = {
-		 *  age: 31,
+		 * age: 31,
 		 *  traits: {eyes: 'blue', shoe_size: 10},
 		 * };
 		 *
 		 * // second user, initial values
 		 * let UID345_object = {
-		 *  name: 'Marge',
+		 * name: 'Marge',
 		 *  age: 25,
 		 *  traits: {hair: 'blonde', eyes: 'blue'},
 		 * };
 		 *
 		 * // second user, delta values
 		 * let UID345_delta = {
-		 *  age: 26,
+		 * age: 26,
 		 *  traits: {eyes: 'green', shoe_size: 6},
 		 * };
 		 *
@@ -235,20 +236,20 @@ declare module 'react-native' {
 		 * let multi_merge_pairs = [['UID234', JSON.stringify(UID234_delta)], ['UID345', JSON.stringify(UID345_delta)]]
 		 *
 		 * AsyncStorage.multiSet(multi_set_pairs, (err) => {
-		 *   AsyncStorage.multiMerge(multi_merge_pairs, (err) => {
-		 *     AsyncStorage.multiGet(['UID234','UID345'], (err, stores) => {
-		 *       stores.map( (result, i, store) => {
-		 *         let key = store[i][0];
-		 *         let val = store[i][1];
-		 *         console.log(key, val);
+		 * AsyncStorage.multiMerge(multi_merge_pairs, (err) => {
+		 * AsyncStorage.multiGet(['UID234', 'UID345'], (err, stores) => {
+		 * stores.map((result, i, store) => {
+		 * let key = store[i][0];
+		 * let val = store[i][1];
+		 * console.log(key, val);
 		 *       });
 		 *     });
 		 *   });
-		 * });
+											* });
 		 *
 		 * // Console log results:
-		 * // => UID234 {"name":"Chris","age":31,"traits":{"shoe_size":10,"hair":"brown","eyes":"blue"}}
-		 * // => UID345 {"name":"Marge","age":26,"traits":{"shoe_size":6,"hair":"blonde","eyes":"green"}}
+		 * // => UID234 {"name": "Chris","age":31,"traits":{"shoe_size": 10,"hair":"brown","eyes":"blue"}}
+		 * // => UID345 {"name": "Marge","age":26,"traits":{"shoe_size": 6,"hair":"blonde","eyes":"green"}}
 		 */
 		multiMerge(
 		  keyValuePairs: Array<Array<string>>,
