@@ -8,6 +8,7 @@ declare module 'react-native' {
 	declare export var TouchableHighlight: any
 	declare export var ActivityIndicator: any
 	declare export var ScrollView: any
+	declare export var ProgressViewIOS: any
 
 	declare export var AsyncStorage: {|
 		/**
