@@ -82,8 +82,8 @@ export class DeckListViewContainer extends React.Component<Props, State> {
         <View style={[Layout.Flex]}>
             <ScrollView style={[Layout.Flex]}>
                 {this.state.decks.map((deck, index) => (
-                    <Animated.View style={{ opacity: 1, transform: [{ scale: this.state.springAnim[deck.uuid] }] }}>
-                        <DeckSummary key={deck.uuid} deck={this.state.decks[index]} onPress={() => this.openDeckView(deck)} />
+                    <Animated.View key={deck.uuid} style={{ opacity: 1, transform: [{ scale: this.state.springAnim[deck.uuid] }] }}>
+                        <DeckSummary deck={this.state.decks[index]} onPress={() => this.openDeckView(deck)} />
                     </Animated.View>
                 ))}
             </ScrollView>

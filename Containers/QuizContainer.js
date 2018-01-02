@@ -54,7 +54,8 @@ export class QuizContainer extends React.Component<Props, State> {
         const currentQuestion = deck.questions[this.state.currentIndex]
         const remainingQuestions = deck.questions.length - 1
         const progress = 1 / deck.questions.length
-        this.setState({ currentQuestion, remainingQuestions, progress })
+        const showResults = false
+        this.setState({ currentQuestion, remainingQuestions, progress, showResults })
     }
 
     getDeck = () => this.props.navigation.state.params.deck
@@ -97,13 +98,11 @@ export class QuizContainer extends React.Component<Props, State> {
         const currentIndex = this.state.currentIndex + 1
         const correctAnswers = isCorrect ? this.state.correctAnswers + 1 : this.state.correctAnswers
         const progress = (currentIndex + 1) / deck.questions.length
-        console.info("progress", progress);
         const showQuestion = true
         const remainingQuestions = deck.questions.length - currentIndex
 
         const isFinished = currentIndex == deck.questions.length
         if (isFinished) {
-            console.info("finished the quiz");
             this.setState({ currentQuestion: undefined, showResults: true, correctAnswers })
         } else {
             const currentQuestion = this.getDeck().questions[currentIndex]
