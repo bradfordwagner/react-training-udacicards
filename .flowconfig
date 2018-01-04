@@ -8,6 +8,7 @@ node_modules/react-native/flow
 .*/node_modules/react-native/Libraries/.*
 .*/node_modules/react-native-tab-view/.*
 .*/node_modules/react-navigation/.*
+.*/node_modules/expo/.*
 
 [options]
 module.file_ext=.js

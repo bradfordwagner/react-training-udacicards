@@ -9,6 +9,7 @@ import {ProgressViewIOS, Text, View} from 'react-native';
 import {Deck, Question} from '../Lib/Deck';
 import {Layout} from '../Util/CommonStyles';
 import {QuizCompletion} from '../Components/QuizCompletion';
+import * as Notifications from "../Util/Notifications";
 
 export type QuizParams = {
     deck: Deck
@@ -101,8 +102,9 @@ export class QuizContainer extends React.Component<Props, State> {
         const showQuestion = true;
         const remainingQuestions = deck.questions.length - currentIndex;
 
-        const isFinished = currentIndex == deck.questions.length;
+        const isFinished = currentIndex === deck.questions.length;
         if (isFinished) {
+          Notifications.cancelNotifications().then(() => Notifications.scheduleNotification());
             this.setState({ currentQuestion: undefined, showResults: true, correctAnswers })
         } else {
             const currentQuestion = this.getDeck().questions[currentIndex];

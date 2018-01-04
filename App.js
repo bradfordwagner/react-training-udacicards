@@ -1,16 +1,18 @@
 // @flow
 
 import React from 'react';
-import { Text, View } from 'react-native';
-import { Deck, Question } from './Lib/Deck';
-import { DeckListViewContainer } from './Containers/DeckListViewContainer'
-import { Layout, HorizontalAlignment, VerticalAlignment } from './Util/CommonStyles';
-import { Stack } from './Navigation/Stack';
+import {Stack} from './Navigation/Stack';
+import * as Notifications from './Util/Notifications';
 
 type Props = {}
 type State = {}
 
 export default class App extends React.Component<Props, State> {
+  componentDidMount = () => {
+    // Notifications.cancelNotifications();
+    Notifications.scheduleNotification();
+  };
+
   render() {
     return (
       <Stack />
