@@ -1,14 +1,14 @@
 // @flow
 
-import type { NavigationProps } from "../Lib/Navigation"
-import type { Action } from "../Components/ActionBar"
+import type {NavigationProps} from "../Lib/Navigation"
+import type {Action} from "../Components/ActionBar"
+import {ActionBar} from '../Components/ActionBar';
 
 import React from 'react'
-import { View, Text, ProgressViewIOS } from 'react-native';
-import { Deck, Question } from '../Lib/Deck';
-import { Layout } from '../Util/CommonStyles';
-import { ActionBar } from '../Components/ActionBar';
-import { QuizCompletion } from '../Components/QuizCompletion';
+import {ProgressViewIOS, Text, View} from 'react-native';
+import {Deck, Question} from '../Lib/Deck';
+import {Layout} from '../Util/CommonStyles';
+import {QuizCompletion} from '../Components/QuizCompletion';
 
 export type QuizParams = {
     deck: Deck
@@ -37,30 +37,30 @@ export class QuizContainer extends React.Component<Props, State> {
         remainingQuestions: 0,
         correctAnswers: 0,
         showResults: false
-    }
+    };
 
     componentDidMount = () => {
-        const deck = this.getDeck()
+        const deck = this.getDeck();
 
         if (deck.questions.length == 0) {
             this.goBack()
         } else {
             this.restartQuiz()
         }
-    }
+    };
 
     restartQuiz = () => {
-        const deck = this.getDeck()
-        const currentQuestion = deck.questions[this.state.currentIndex]
-        const remainingQuestions = deck.questions.length - 1
-        const progress = 1 / deck.questions.length
-        const showResults = false
+        const deck = this.getDeck();
+        const currentQuestion = deck.questions[this.state.currentIndex];
+        const remainingQuestions = deck.questions.length - 1;
+        const progress = 1 / deck.questions.length;
+        const showResults = false;
         this.setState({ currentQuestion, remainingQuestions, progress, showResults })
-    }
+    };
 
-    getDeck = () => this.props.navigation.state.params.deck
+    getDeck = () => this.props.navigation.state.params.deck;
 
-    goBack = () => this.props.navigation.goBack()
+    goBack = () => this.props.navigation.goBack();
 
     resolveText = () => {
         if (this.state.currentQuestion) {
@@ -68,47 +68,47 @@ export class QuizContainer extends React.Component<Props, State> {
         } else {
             return ""
         }
-    }
+    };
 
     buildActions = () => {
         const correct: Action = {
             title: "Correct",
             onPress: () => this.nextQuestion(true)
-        }
+        };
 
         const incorrect: Action = {
             title: "Incorrect",
             onPress: () => this.nextQuestion(false)
-        }
+        };
 
         const toggleView: Action = {
             title: this.showQuestion ? "Show Answer" : "Show Question",
             onPress: () => {
-                this.setState({ showQuestion: !this.state.showQuestion })
+                this.setState({ showQuestion: !this.state.showQuestion });
                 this.forceUpdate()
             }
-        }
+        };
 
         return [correct, incorrect, toggleView]
-    }
+    };
 
     nextQuestion = (isCorrect: boolean) => {
-        const deck = this.getDeck()
+        const deck = this.getDeck();
 
-        const currentIndex = this.state.currentIndex + 1
-        const correctAnswers = isCorrect ? this.state.correctAnswers + 1 : this.state.correctAnswers
-        const progress = (currentIndex + 1) / deck.questions.length
-        const showQuestion = true
-        const remainingQuestions = deck.questions.length - currentIndex
+        const currentIndex = this.state.currentIndex + 1;
+        const correctAnswers = isCorrect ? this.state.correctAnswers + 1 : this.state.correctAnswers;
+        const progress = (currentIndex + 1) / deck.questions.length;
+        const showQuestion = true;
+        const remainingQuestions = deck.questions.length - currentIndex;
 
-        const isFinished = currentIndex == deck.questions.length
+        const isFinished = currentIndex == deck.questions.length;
         if (isFinished) {
             this.setState({ currentQuestion: undefined, showResults: true, correctAnswers })
         } else {
-            const currentQuestion = this.getDeck().questions[currentIndex]
+            const currentQuestion = this.getDeck().questions[currentIndex];
             this.setState({ currentQuestion, currentIndex, correctAnswers, progress, showQuestion, remainingQuestions })
         }
-    }
+    };
 
     render = () => {
         if (this.state.showResults) {
@@ -116,7 +116,7 @@ export class QuizContainer extends React.Component<Props, State> {
         } else {
             return this.renderQuestion()
         }
-    }
+    };
 
     renderQuestion = () => (
         <View style={[Layout.Flex]}>
@@ -133,7 +133,7 @@ export class QuizContainer extends React.Component<Props, State> {
 
             <ActionBar actions={this.buildActions()} />
         </View>
-    )
+    );
 
     renderCompletion = () => (
         <QuizCompletion
@@ -142,7 +142,7 @@ export class QuizContainer extends React.Component<Props, State> {
             totalQuestions={this.getDeck().questions.length}
             goBack={this.goBack}
             restartQuiz={() => {
-                this.restartQuiz()
+                this.restartQuiz();
                 this.forceUpdate()
             }}
         />
