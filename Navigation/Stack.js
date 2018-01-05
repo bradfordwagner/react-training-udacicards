@@ -1,14 +1,13 @@
 // @flow
 
 import React from 'react'
-import { StackNavigator } from 'react-navigation';
-import { States } from './NavigationStates';
-import { DeckListViewContainer } from '../Containers/DeckListViewContainer';
-import { Text } from 'react-native';
-import { NewDeckContainer } from '../Containers/NewDeckContainer';
-import { AddQuestionContainer } from '../Containers/AddQuestionContainer';
-import { IndividualDeckViewContainer } from '../Containers/IndividualDeckViewContainer';
-import { QuizContainer } from '../Containers/QuizContainer';
+import {StackNavigator} from 'react-navigation';
+import {States} from './NavigationStates';
+import {DeckListViewContainer} from '../Containers/DeckListViewContainer';
+import {NewDeckContainer} from '../Containers/NewDeckContainer';
+import {AddQuestionContainer} from '../Containers/AddQuestionContainer';
+import {IndividualDeckViewContainer} from '../Containers/IndividualDeckViewContainer';
+import {QuizContainer} from '../Containers/QuizContainer';
 
 export const Stack = StackNavigator({
     [States.DeckListView]: { screen: DeckListViewContainer },
@@ -16,4 +15,4 @@ export const Stack = StackNavigator({
     [States.AddQuestion]: { screen: AddQuestionContainer },
     [States.IndividualDeckView]: { screen: IndividualDeckViewContainer },
     [States.Quiz]: { screen: QuizContainer }
-})
+});

@@ -9,7 +9,6 @@ type State = {}
 
 export default class App extends React.Component<Props, State> {
   componentDidMount = () => {
-    // Notifications.cancelNotifications();
     Notifications.scheduleNotification();
   };
 
