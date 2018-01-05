@@ -19,7 +19,6 @@ import {CombinedActions} from "../Redux/CombinedActions";
 
 type Props = {
     navigation: NavigationProps<any>,
-    setTimeout(todo: Function, time: number): void
 }
 
 type CombinedProps = Props & CombinedActionsProps
