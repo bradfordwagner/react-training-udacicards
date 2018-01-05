@@ -12,6 +12,8 @@ import {Deck} from '../Lib/Deck';
 import {Layout} from '../Util/CommonStyles';
 import {DeckSummary} from '../Components/DeckSummary';
 import {States} from '../Navigation/NavigationStates';
+import {connect} from "react-redux";
+import {CombinedState} from "../Redux/CombinedState";
 
 type Props = {
     navigation: NavigationProps<any>,
@@ -23,7 +25,7 @@ type State = {
     springAnim: { [uuid: string]: Animated.Value }
 }
 
-export class DeckListViewContainer extends React.Component<Props, State> {
+class DeckListView extends React.Component<Props, State> {
     animationDuration = 200;
 
     state = {
@@ -91,3 +93,10 @@ export class DeckListViewContainer extends React.Component<Props, State> {
         </View>
     )
 }
+
+const mapStateToProps = (state: CombinedState) => {
+  console.info('map state to props', state);
+  return {}
+};
+
+export const DeckListViewContainer = connect(mapStateToProps)(DeckListView);

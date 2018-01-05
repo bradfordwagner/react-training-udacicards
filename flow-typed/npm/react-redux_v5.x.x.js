@@ -1,7 +1,7 @@
 // flow-typed signature: 59b0c4be0e1408f21e2446be96c79804
 // flow-typed version: 9092387fd2/react-redux_v5.x.x/flow_>=v0.54.x
 
-import type { Dispatch, Store } from "redux";
+import type {Dispatch, Store} from "redux";
 
 declare module "react-redux" {
   /*
@@ -84,16 +84,16 @@ declare module "react-redux" {
 
   declare type Null = null | void;
 
-  declare function connect<A, OP>(
-    ...rest: Array<void> // <= workaround for https://github.com/facebook/flow/issues/2360
-  ): Connector<OP, $Supertype<{ dispatch: Dispatch<A> } & OP>>;
-
-  declare function connect<A, OP>(
-    mapStateToProps: Null,
-    mapDispatchToProps: Null,
-    mergeProps: Null,
-    options: ConnectOptions
-  ): Connector<OP, $Supertype<{ dispatch: Dispatch<A> } & OP>>;
+  // declare function connect<A, OP>(
+  //   ...rest: Array<void> // <= workaround for https://github.com/facebook/flow/issues/2360
+  // ): Connector<OP, $Supertype<{ dispatch: Dispatch<A> } & OP>>;
+  //
+  // declare function connect<A, OP>(
+  //   mapStateToProps: Null,
+  //   mapDispatchToProps: Null,
+  //   mergeProps: Null,
+  //   options: ConnectOptions
+  // ): Connector<OP, $Supertype<{ dispatch: Dispatch<A> } & OP>>;
 
   declare function connect<S, A, OP, SP>(
     mapStateToProps: MapStateToProps<S, OP, SP>,
@@ -102,31 +102,31 @@ declare module "react-redux" {
     options?: ConnectOptions
   ): Connector<OP, $Supertype<SP & { dispatch: Dispatch<A> } & OP>>;
 
-  declare function connect<A, OP, DP>(
-    mapStateToProps: Null,
-    mapDispatchToProps: MapDispatchToProps<A, OP, DP>,
-    mergeProps: Null,
-    options?: ConnectOptions
-  ): Connector<OP, $Supertype<DP & OP>>;
-
-  declare function connect<S, A, OP, SP, DP>(
-    mapStateToProps: MapStateToProps<S, OP, SP>,
-    mapDispatchToProps: MapDispatchToProps<A, OP, DP>,
-    mergeProps: Null,
-    options?: ConnectOptions
-  ): Connector<OP, $Supertype<SP & DP & OP>>;
-
-  declare function connect<S, A, OP, SP, DP, P>(
-    mapStateToProps: MapStateToProps<S, OP, SP>,
-    mapDispatchToProps: Null,
-    mergeProps: MergeProps<SP, DP, OP, P>,
-    options?: ConnectOptions
-  ): Connector<OP, P>;
-
-  declare function connect<S, A, OP, SP, DP, P>(
-    mapStateToProps: MapStateToProps<S, OP, SP>,
-    mapDispatchToProps: MapDispatchToProps<A, OP, DP>,
-    mergeProps: MergeProps<SP, DP, OP, P>,
-    options?: ConnectOptions
-  ): Connector<OP, P>;
+  // declare function connect<A, OP, DP>(
+  //   mapStateToProps: Null,
+  //   mapDispatchToProps: MapDispatchToProps<A, OP, DP>,
+  //   mergeProps: Null,
+  //   options?: ConnectOptions
+  // ): Connector<OP, $Supertype<DP & OP>>;
+  //
+  // declare function connect<S, A, OP, SP, DP>(
+  //   mapStateToProps: MapStateToProps<S, OP, SP>,
+  //   mapDispatchToProps: MapDispatchToProps<A, OP, DP>,
+  //   mergeProps: Null,
+  //   options?: ConnectOptions
+  // ): Connector<OP, $Supertype<SP & DP & OP>>;
+  //
+  // declare function connect<S, A, OP, SP, DP, P>(
+  //   mapStateToProps: MapStateToProps<S, OP, SP>,
+  //   mapDispatchToProps: Null,
+  //   mergeProps: MergeProps<SP, DP, OP, P>,
+  //   options?: ConnectOptions
+  // ): Connector<OP, P>;
+  //
+  // declare function connect<S, A, OP, SP, DP, P>(
+  //   mapStateToProps: MapStateToProps<S, OP, SP>,
+  //   mapDispatchToProps: MapDispatchToProps<A, OP, DP>,
+  //   mergeProps: MergeProps<SP, DP, OP, P>,
+  //   options?: ConnectOptions
+  // ): Connector<OP, P>;
 }
