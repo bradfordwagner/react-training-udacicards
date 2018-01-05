@@ -1,22 +1,22 @@
 //  @flow
 
-import { AsyncStorage } from 'react-native'
-import { Deck, Question } from "../Lib/Deck"
-import type { DeckStoreage } from "../Lib/Deck"
+import {AsyncStorage} from 'react-native'
+import type {DeckStoreage} from "../Lib/Deck"
+import {Deck} from "../Lib/Deck"
 
-const DecksKey = "bradfordwagner-TrainingCards-decks"
+const DecksKey = "bradfordwagner-TrainingCards-decks";
 
 export const saveDeck = (deck: Deck) => {
-    return AsyncStorage.mergeItem(DecksKey, JSON.stringify({ [deck.uuid]: deck }))
-}
+  return AsyncStorage.mergeItem(DecksKey, JSON.stringify({[deck.uuid]: deck}))
+};
 
 export const loadDecks = () => {
-    return AsyncStorage.getItem(DecksKey).then(res => {
-        const storeage: DeckStoreage = JSON.parse(res)
-        return storeage ? parseStoreage(storeage) : []
-    })
-}
+  return AsyncStorage.getItem(DecksKey).then(res => {
+    const storeage: DeckStoreage = JSON.parse(res);
+    return storeage ? parseStoreage(storeage) : []
+  })
+};
 
 function parseStoreage(storeage: DeckStoreage): Deck[] {
-    return Object.keys(storeage).map(key => storeage[key])
+  return Object.keys(storeage).map(key => storeage[key])
 }
