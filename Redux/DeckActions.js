@@ -19,10 +19,4 @@ export type SaveDeckAction = {
   deck: Deck,
 }
 
-export const loadDecks = () => (dispatch: Dispatch<LoadDecksAction>) => {
-  console.info("outter load decks");
-  Storeage.loadDecks().then(decks => {
-    console.info("dispatching action");
-    dispatch({type: DeckActions.LoadDecks, decks})
-  });
-};
+export const loadDecks = () => (dispatch: Dispatch<LoadDecksAction>) => Storeage.loadDecks().then(decks => dispatch({type: DeckActions.LoadDecks, decks}));
