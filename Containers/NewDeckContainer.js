@@ -15,9 +15,7 @@ import {States} from '../Navigation/NavigationStates';
 import {Ionicons} from "@expo/vector-icons";
 import * as Storeage from "../Util/Storeage"
 
-export type NewDeckNavigationProps = {
-    onCreate: Function
-}
+export type NewDeckNavigationProps = {}
 
 type Props = {
     navigation: NavigationProps<NewDeckNavigationProps>
@@ -54,9 +52,6 @@ export class NewDeckContainer extends Component<Props, State> {
         console.info("creating");
         Storeage.saveDeck(this.state.deck).then(() => {
             this.props.navigation.goBack();
-            if (this.props.navigation.state.params.onCreate) {
-                this.props.navigation.state.params.onCreate()
-            }
         })
     };
 

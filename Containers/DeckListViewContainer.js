@@ -7,24 +7,27 @@ import type {IndividualDeckViewContainerNavigationProps} from './IndividualDeckV
 
 import React from 'react';
 import {Animated, ScrollView, View} from 'react-native';
-import * as Storeage from '../Util/Storeage';
 import {Deck} from '../Lib/Deck';
 import {Layout} from '../Util/CommonStyles';
 import {DeckSummary} from '../Components/DeckSummary';
 import {States} from '../Navigation/NavigationStates';
 import {connect} from "react-redux";
-import {CombinedState} from "../Redux/CombinedState";
+import type {CombinedState} from "../Redux/CombinedState";
 import type {CombinedActionsProps} from "../Redux/CombinedActions";
 import {CombinedActions} from "../Redux/CombinedActions";
+
+type ReduxProps = {
+  decks: Deck[],
+  loadedDecks: boolean,
+}
 
 type Props = {
   navigation: NavigationProps<any>,
 }
 
-type CombinedProps = Props & CombinedActionsProps
+type CombinedProps = Props & CombinedActionsProps & ReduxProps
 
 type State = {
-  decks: Deck[],
   springAnim: { [uuid: string]: Animated.Value }
 }
 
@@ -32,28 +35,23 @@ class DeckListView extends React.Component<CombinedProps, State> {
   animationDuration = 200;
 
   state = {
-    decks: [],
-    springAnim: {}//new Animated.Value(1)
+    springAnim: {}
   };
 
   componentDidMount = () => {
-    this.reloadDecks();
     this.props.loadDecks();
   };
 
-  reloadDecks = () => {
-    Storeage.loadDecks().then(decks => {
-      const springAnim = this.state.springAnim;
-      decks.forEach(deck => {
-        springAnim[deck.uuid] = new Animated.Value(1)
-      });
-
-      this.setState({decks, springAnim})
-    })
+  componentWillReceiveProps = (props: CombinedProps) => {
+    const springAnim: { [uuid: string]: Animated.Value } = {};
+    const decks = this.props.decks;
+    decks.forEach(deck => springAnim[deck.uuid] = new Animated.Value(1));
+    console.info("setting animations", springAnim);
+    this.setState({springAnim})
   };
 
   newDeck = () => {
-    const params: NewDeckNavigationProps = {onCreate: () => this.reloadDecks()};
+    const params: NewDeckNavigationProps = {};
     this.props.navigation.navigate(States.AddDeck, params)
   };
 
@@ -77,30 +75,35 @@ class DeckListView extends React.Component<CombinedProps, State> {
   };
 
   springAnimation = (deck: Deck) => {
-    Animated.spring(this.state.springAnim[deck.uuid], {duration: this.animationDuration, toValue: 1.3}).start()
+    Animated.spring(this.getAnimatedValue(deck.uuid), {duration: this.animationDuration, toValue: 1.3}).start()
   };
 
   unspringAnimation = (deck: Deck) => {
-    Animated.spring(this.state.springAnim[deck.uuid], {duration: this.animationDuration, toValue: 1}).start()
+    Animated.spring(this.getAnimatedValue(deck.uuid), {duration: this.animationDuration, toValue: 1}).start()
   };
+
+  getAnimatedValue = (uuid: string) => this.state.springAnim && this.state.springAnim[uuid] ? this.state.springAnim[uuid] : new Animated.Value(1);
 
   render = () => (
     <View style={[Layout.Flex]}>
       <ScrollView style={[Layout.Flex]}>
-        {this.state.decks.map((deck, index) => (
-          <Animated.View key={deck.uuid} style={{opacity: 1, transform: [{scale: this.state.springAnim[deck.uuid]}]}}>
-            <DeckSummary deck={this.state.decks[index]} onPress={() => this.openDeckView(deck)}/>
+        {this.props.decks.map((deck, index) => (
+          <Animated.View key={deck.uuid} style={{opacity: 1, transform: [{scale: this.getAnimatedValue(deck.uuid)}]}}>
+            <DeckSummary deck={deck} onPress={() => this.openDeckView(deck)}/>
           </Animated.View>
         ))}
       </ScrollView>
       <ActionBar actions={this.buildActions()}/>
     </View>
   )
+
 }
 
 const mapStateToProps = (state: CombinedState) => {
-  console.info('map state to props', state);
-  return {}
+  const decks: Deck[] = state.deck.sortedAlphabetically.map(uuid => state.deck.byId[uuid]);
+  const props: ReduxProps = {decks, loadedDecks: decks.length > 0};
+  console.info("mapStateToProps", props);
+  return props;
 };
 
 export const DeckListViewContainer = connect(mapStateToProps, CombinedActions)(DeckListView);

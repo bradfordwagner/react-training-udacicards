@@ -11,7 +11,7 @@ import {NewDeckContainer} from '../Containers/NewDeckContainer';
 import {AddQuestionContainer} from '../Containers/AddQuestionContainer';
 import {IndividualDeckViewContainer} from '../Containers/IndividualDeckViewContainer';
 import {QuizContainer} from '../Containers/QuizContainer';
-import {CombinedState} from "../Redux/CombinedState";
+import type {CombinedState} from "../Redux/CombinedState";
 import {connect} from "react-redux";
 
 export const Navigator = StackNavigator({

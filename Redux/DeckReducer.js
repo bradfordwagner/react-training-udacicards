@@ -11,7 +11,6 @@ type DeckAction = LoadDecksAction & SaveDeckAction
 export const DeckReducer = (state: DeckState = InitialDeckState, action: DeckAction) => {
   switch (action.type) {
     case DeckActions.LoadDecks:
-      console.info("loaded decks in reducer");
       const {decks} = action;
       const byId: { [uuid: string]: Deck } = {};
       decks.forEach(deck => byId[deck.uuid] = deck);
@@ -22,4 +21,8 @@ export const DeckReducer = (state: DeckState = InitialDeckState, action: DeckAct
   }
 };
 
-const sortAlphabetically = (byId: { [uuid: string]: Deck }) => Object.keys(byId).map(uuid => byId[uuid]).sort((a, b) => a.title.toUpperCase().localeCompare(b.title.toUpperCase()));
+const sortAlphabetically = (byId: { [uuid: string]: Deck }) =>
+  Object.keys(byId)
+    .map(uuid => byId[uuid])
+    .sort((a, b) => a.title.toUpperCase().localeCompare(b.title.toUpperCase()))
+    .map(deck => deck.uuid);

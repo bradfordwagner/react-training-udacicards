@@ -3,7 +3,7 @@
 import type {NavigationState} from "./NavigationState";
 import type {DeckState} from "./DeckState";
 
-export class CombinedState {
-  nav: NavigationState
+export type CombinedState = {
+  nav: NavigationState,
   deck: DeckState
 }
