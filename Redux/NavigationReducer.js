@@ -11,10 +11,8 @@ export const NavigationReducer = (state: NavigationState = InitialNavigationStat
   let nextState: any;
   switch (action.type) {
     case (NavigationActionConstants.Navigate):
-      console.info("received action", NavigationActionConstants.Navigate);
     default:
       nextState = Navigator.router.getStateForAction(action, state);
-      console.info("defaulted state", nextState);
   }
   return nextState || state;
 };
