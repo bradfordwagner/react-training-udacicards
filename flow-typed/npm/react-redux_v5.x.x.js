@@ -82,7 +82,7 @@ declare module "react-redux" {
     withRef?: boolean
   };
 
-  declare type Null = null | void;
+  declare type Null = null | void | Function;
 
   // declare function connect<A, OP>(
   //   ...rest: Array<void> // <= workaround for https://github.com/facebook/flow/issues/2360

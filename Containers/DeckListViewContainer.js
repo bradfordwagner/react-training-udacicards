@@ -14,18 +14,22 @@ import {DeckSummary} from '../Components/DeckSummary';
 import {States} from '../Navigation/NavigationStates';
 import {connect} from "react-redux";
 import {CombinedState} from "../Redux/CombinedState";
+import type {CombinedActionsProps} from "../Redux/CombinedActions";
+import {CombinedActions} from "../Redux/CombinedActions";
 
 type Props = {
     navigation: NavigationProps<any>,
     setTimeout(todo: Function, time: number): void
 }
 
+type CombinedProps = Props & CombinedActionsProps
+
 type State = {
     decks: Deck[],
     springAnim: { [uuid: string]: Animated.Value }
 }
 
-class DeckListView extends React.Component<Props, State> {
+class DeckListView extends React.Component<CombinedProps, State> {
     animationDuration = 200;
 
     state = {
@@ -34,7 +38,8 @@ class DeckListView extends React.Component<Props, State> {
     };
 
     componentDidMount = () => {
-        this.reloadDecks()
+      this.reloadDecks();
+      this.props.loadDecks();
     };
 
     reloadDecks = () => {
@@ -99,4 +104,4 @@ const mapStateToProps = (state: CombinedState) => {
   return {}
 };
 
-export const DeckListViewContainer = connect(mapStateToProps)(DeckListView);
+export const DeckListViewContainer = connect(mapStateToProps, CombinedActions)(DeckListView);
