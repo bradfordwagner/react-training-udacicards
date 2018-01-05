@@ -1,16 +1,9 @@
 // @flow
 
 import React from 'react';
-import { Text, View, TouchableHighlight } from 'react-native';
-import {
-    BackgroundColors,
-    HorizontalAlignment,
-    TextAlignment,
-    TextStyle,
-    CardStyle,
-    Uno1
-} from '../Util/CommonStyles';
-import { Deck } from '../Lib/Deck';
+import {Text, TouchableHighlight, View} from 'react-native';
+import {CardStyle, TextAlignment, TextStyle, Uno1} from '../Util/CommonStyles';
+import {Deck} from '../Lib/Deck';
 
 export type DeckSummaryProps = {
     deck: Deck,
