@@ -18,84 +18,84 @@ import type {CombinedActionsProps} from "../Redux/CombinedActions";
 import {CombinedActions} from "../Redux/CombinedActions";
 
 type Props = {
-    navigation: NavigationProps<any>,
+  navigation: NavigationProps<any>,
 }
 
 type CombinedProps = Props & CombinedActionsProps
 
 type State = {
-    decks: Deck[],
-    springAnim: { [uuid: string]: Animated.Value }
+  decks: Deck[],
+  springAnim: { [uuid: string]: Animated.Value }
 }
 
 class DeckListView extends React.Component<CombinedProps, State> {
-    animationDuration = 200;
+  animationDuration = 200;
 
-    state = {
-        decks: [],
-        springAnim: {}//new Animated.Value(1)
+  state = {
+    decks: [],
+    springAnim: {}//new Animated.Value(1)
+  };
+
+  componentDidMount = () => {
+    this.reloadDecks();
+    this.props.loadDecks();
+  };
+
+  reloadDecks = () => {
+    Storeage.loadDecks().then(decks => {
+      const springAnim = this.state.springAnim;
+      decks.forEach(deck => {
+        springAnim[deck.uuid] = new Animated.Value(1)
+      });
+
+      this.setState({decks, springAnim})
+    })
+  };
+
+  newDeck = () => {
+    const params: NewDeckNavigationProps = {onCreate: () => this.reloadDecks()};
+    this.props.navigation.navigate(States.AddDeck, params)
+  };
+
+  buildActions = () => {
+    const createDeck: Action = {
+      title: "Create Deck",
+      onPress: () => this.newDeck()
     };
+    return [createDeck]
+  };
 
-    componentDidMount = () => {
-      this.reloadDecks();
-      this.props.loadDecks();
-    };
+  openDeckView = (deck: Deck) => {
+    this.springAnimation(deck);
+    setTimeout(() => {
+      this.unspringAnimation(deck);
+      setTimeout(() => {
+        const params: IndividualDeckViewContainerNavigationProps = {afterEdit: () => this.forceUpdate(), deck};
+        this.props.navigation.navigate(States.IndividualDeckView, params)
+      }, this.animationDuration + 100)
+    }, this.animationDuration)
+  };
 
-    reloadDecks = () => {
-        Storeage.loadDecks().then(decks => {
-            const springAnim = this.state.springAnim;
-            decks.forEach(deck => {
-                springAnim[deck.uuid] = new Animated.Value(1)
-            });
+  springAnimation = (deck: Deck) => {
+    Animated.spring(this.state.springAnim[deck.uuid], {duration: this.animationDuration, toValue: 1.3}).start()
+  };
 
-            this.setState({ decks, springAnim })
-        })
-    };
+  unspringAnimation = (deck: Deck) => {
+    Animated.spring(this.state.springAnim[deck.uuid], {duration: this.animationDuration, toValue: 1}).start()
+  };
 
-    newDeck = () => {
-        const params: NewDeckNavigationProps = { onCreate: () => this.reloadDecks() };
-        this.props.navigation.navigate(States.AddDeck, params)
-    };
-
-    buildActions = () => {
-        const createDeck: Action = {
-            title: "Create Deck",
-            onPress: () => this.newDeck()
-        };
-        return [createDeck]
-    };
-
-    openDeckView = (deck: Deck) => {
-        this.springAnimation(deck);
-        setTimeout(() => {
-            this.unspringAnimation(deck);
-            setTimeout(() => {
-                const params: IndividualDeckViewContainerNavigationProps = { afterEdit: () => this.forceUpdate(), deck };
-                this.props.navigation.navigate(States.IndividualDeckView, params)
-            }, this.animationDuration + 100)
-        }, this.animationDuration)
-    };
-
-    springAnimation = (deck: Deck) => {
-        Animated.spring(this.state.springAnim[deck.uuid], { duration: this.animationDuration, toValue: 1.3 }).start()
-    };
-
-    unspringAnimation = (deck: Deck) => {
-        Animated.spring(this.state.springAnim[deck.uuid], { duration: this.animationDuration, toValue: 1 }).start()
-    };
-
-    render = () => (
-        <View style={[Layout.Flex]}>
-            <ScrollView style={[Layout.Flex]}>
-                {this.state.decks.map((deck, index) => (
-                    <Animated.View key={deck.uuid} style={{ opacity: 1, transform: [{ scale: this.state.springAnim[deck.uuid] }] }}>
-                        <DeckSummary deck={this.state.decks[index]} onPress={() => this.openDeckView(deck)} />
-                    </Animated.View>
-                ))}
-            </ScrollView>
-            <ActionBar actions={this.buildActions()} />
-        </View>
-    )
+  render = () => (
+    <View style={[Layout.Flex]}>
+      <ScrollView style={[Layout.Flex]}>
+        {this.state.decks.map((deck, index) => (
+          <Animated.View key={deck.uuid} style={{opacity: 1, transform: [{scale: this.state.springAnim[deck.uuid]}]}}>
+            <DeckSummary deck={this.state.decks[index]} onPress={() => this.openDeckView(deck)}/>
+          </Animated.View>
+        ))}
+      </ScrollView>
+      <ActionBar actions={this.buildActions()}/>
+    </View>
+  )
 }
 
 const mapStateToProps = (state: CombinedState) => {
