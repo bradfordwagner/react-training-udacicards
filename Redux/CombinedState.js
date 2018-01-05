@@ -1,6 +1,5 @@
 // @flow
 
-
 import type {NavigationState} from "./NavigationState";
 import type {DeckState} from "./DeckState";
 
