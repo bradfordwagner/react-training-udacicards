@@ -35,7 +35,6 @@ type CombinedProps = ReduxProps & Props
 type State = {}
 
 export const IndividualDeckViewContainer = connect((state: CombinedState, ownProps: Props) => {
-  console.info("individual view map state to props - own props", ownProps.navigation.state.params);
   const deck = state.deck.byId[ownProps.navigation.state.params.deckId];
   const title = deck.title;
   const numQuestions = deck.questions.length;
