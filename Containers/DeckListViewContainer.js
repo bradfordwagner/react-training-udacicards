@@ -18,7 +18,6 @@ import {CombinedActions} from "../Redux/CombinedActions";
 
 type ReduxProps = {
   decks: Deck[],
-  loadedDecks: boolean,
 }
 
 type Props = {
@@ -42,11 +41,10 @@ class DeckListView extends React.Component<CombinedProps, State> {
     this.props.loadDecks();
   };
 
-  componentWillReceiveProps = (props: CombinedProps) => {
+  componentWillReceiveProps(props: CombinedProps) {
     const springAnim: { [uuid: string]: Animated.Value } = {};
-    const decks = this.props.decks;
+    const decks = props.decks;
     decks.forEach(deck => springAnim[deck.uuid] = new Animated.Value(1));
-    console.info("setting animations", springAnim);
     this.setState({springAnim})
   };
 
@@ -68,7 +66,7 @@ class DeckListView extends React.Component<CombinedProps, State> {
     setTimeout(() => {
       this.unspringAnimation(deck);
       setTimeout(() => {
-        const params: IndividualDeckViewContainerNavigationProps = {afterEdit: () => this.forceUpdate(), deck};
+        const params: IndividualDeckViewContainerNavigationProps = {deckId: deck.uuid};
         this.props.navigation.navigate(States.IndividualDeckView, params)
       }, this.animationDuration + 100)
     }, this.animationDuration)
@@ -101,8 +99,7 @@ class DeckListView extends React.Component<CombinedProps, State> {
 
 const mapStateToProps = (state: CombinedState) => {
   const decks: Deck[] = state.deck.sortedAlphabetically.map(uuid => state.deck.byId[uuid]);
-  const props: ReduxProps = {decks, loadedDecks: decks.length > 0};
-  console.info("mapStateToProps", props);
+  const props: ReduxProps = {decks};
   return props;
 };
 

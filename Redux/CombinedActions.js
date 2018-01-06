@@ -1,12 +1,15 @@
 // @flow
 
 import type {Dispatch} from "redux";
-import {loadDecks} from "./DeckActions";
+import {loadDecks, saveDeck} from "./DeckActions";
+import {Deck} from "../Lib/Deck";
 
 export const CombinedActions = (dispatch: Dispatch<any>) => ({
-  loadDecks: () => dispatch(loadDecks())
+  loadDecks: () => dispatch(loadDecks()),
+  saveDeck: (deck: Deck) => dispatch(saveDeck(deck))
 });
 
 export interface CombinedActionsProps {
-  loadDecks(): void
+  loadDecks(): Promise<any>,
+  saveDeck(deck: Deck): Promise<any>
 }

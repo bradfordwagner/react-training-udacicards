@@ -10,6 +10,18 @@ type DeckAction = LoadDecksAction & SaveDeckAction
 
 export const DeckReducer = (state: DeckState = InitialDeckState, action: DeckAction) => {
   switch (action.type) {
+    case DeckActions.SaveDeck:
+      const saveDeckAction: SaveDeckAction = action;
+      const deck = saveDeckAction.deck;
+      const newState: DeckState = {
+        ...state,
+        byId: {
+          ...state.byId,
+          [deck.uuid]: deck
+        }
+      };
+      newState.sortedAlphabetically = sortAlphabetically(newState.byId);
+      return newState;
     case DeckActions.LoadDecks:
       const {decks} = action;
       const byId: { [uuid: string]: Deck } = {};
