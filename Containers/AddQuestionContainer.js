@@ -50,8 +50,7 @@ export const AddQuestionContainer = connect((state: CombinedState, ownProps: Pro
 
       const deck = this.props.deck;
       deck.questions.push(q);
-      this.props.saveDeck(deck);
-      this.props.navigation.goBack()
+      this.props.saveDeck(deck).then(() => this.props.navigation.goBack());
     };
 
     buildActions = () => {

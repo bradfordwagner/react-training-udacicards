@@ -25,7 +25,9 @@ type Props = {
 }
 
 type ReduxProps = {
-  deck: Deck
+  deck: Deck,
+  title: string,
+  numQuestions: number,
 }
 
 type CombinedProps = ReduxProps & Props
@@ -34,7 +36,11 @@ type State = {}
 
 export const IndividualDeckViewContainer = connect((state: CombinedState, ownProps: Props) => {
   console.info("individual view map state to props - own props", ownProps.navigation.state.params);
-  return {deck: state.deck.byId[ownProps.navigation.state.params.deckId]};
+  const deck = state.deck.byId[ownProps.navigation.state.params.deckId];
+  const title = deck.title;
+  const numQuestions = deck.questions.length;
+  const props: ReduxProps = {deck, title, numQuestions};
+  return props;
 }, CombinedActions)(
   class extends React.Component<CombinedProps, State> {
 
@@ -67,7 +73,7 @@ export const IndividualDeckViewContainer = connect((state: CombinedState, ownPro
     render = () => (
       <View style={[Layout.Flex]}>
         <View style={[Layout.Flex]}>
-          <DeckSummary deck={this.getDeck()} onPress={() => console.info("you have been squelched")}/>
+          <DeckSummary title={this.props.title} numQuestions={this.props.numQuestions} onPress={() => console.info("you have been squelched")}/>
         </View>
 
         <ActionBar actions={this.buildActions()}/>

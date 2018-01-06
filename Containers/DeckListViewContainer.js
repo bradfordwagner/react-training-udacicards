@@ -87,7 +87,7 @@ class DeckListView extends React.Component<CombinedProps, State> {
       <ScrollView style={[Layout.Flex]}>
         {this.props.decks.map((deck, index) => (
           <Animated.View key={deck.uuid} style={{opacity: 1, transform: [{scale: this.getAnimatedValue(deck.uuid)}]}}>
-            <DeckSummary deck={deck} onPress={() => this.openDeckView(deck)}/>
+            <DeckSummary title={deck.title} numQuestions={deck.questions.length} onPress={() => this.openDeckView(deck)}/>
           </Animated.View>
         ))}
       </ScrollView>
