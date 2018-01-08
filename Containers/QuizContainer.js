@@ -5,15 +5,16 @@ import type {Action} from "../Components/ActionBar"
 import {ActionBar} from '../Components/ActionBar';
 
 import React from 'react'
-import {ProgressViewIOS, Text, View} from 'react-native';
+import {View} from 'react-native';
 import {Deck, Question} from '../Lib/Deck';
 import {Layout} from '../Util/CommonStyles';
 import {QuizCompletion} from '../Components/QuizCompletion';
-import * as Notifications from "../Util/Notifications";
 import {connect} from "react-redux";
 import type {CombinedState} from "../Redux/CombinedState";
 import type {CombinedActionsProps} from "../Redux/CombinedActions";
 import {CombinedActions} from "../Redux/CombinedActions";
+import {QuestionView} from "../Components/QuestionView";
+import {QuizProgress} from "../Components/QuizProgress";
 
 export type QuizParams = {
   deckId: string,
@@ -29,31 +30,26 @@ type ReactProps = {
 type CombinedProps = Props & ReactProps & CombinedActionsProps
 
 type State = {
+  question?: Question,
+  displayQuestion: boolean,
+  numberCorrect: number,
   currentIndex: number,
-  currentQuestion?: Question,
-  progress: number,
-  percentageCorrect: number,
-  showQuestion: boolean,
-  remainingQuestions: number,
-  correctAnswers: number,
-  showResults: boolean
 }
 
-export const QuizContainer = connect((state: CombinedState, selfProps: Props) => {
+const initialState: State = {
+  question: undefined,
+  displayQuestion: true,
+  numberCorrect: 0,
+  currentIndex: 0,
+};
+
+export const QuizContainer = connect((state: CombinedState, selfProps: Props): ReactProps => {
   const uuid = selfProps.navigation.state.params.deckId;
   const deck = state.deck.byId[uuid];
-  return {deck};
+  const props: ReactProps = {deck};
+  return props;
 }, CombinedActions)(class extends React.Component<CombinedProps, State> {
-    state = {
-      currentIndex: 0,
-      currentQuestion: undefined,
-      progress: 0,
-      percentageCorrect: 0,
-      showQuestion: true,
-      remainingQuestions: 0,
-      correctAnswers: 0,
-      showResults: false
-    };
+    state = initialState;
 
     componentDidMount = () => {
       const deck = this.getDeck();
@@ -66,24 +62,16 @@ export const QuizContainer = connect((state: CombinedState, selfProps: Props) =>
     };
 
     restartQuiz = () => {
-      const deck = this.getDeck();
-      const currentQuestion = deck.questions[this.state.currentIndex];
-      const remainingQuestions = deck.questions.length - 1;
-      const progress = 1 / deck.questions.length;
-      const showResults = false;
-      this.setState({currentQuestion, remainingQuestions, progress, showResults})
+      const state: State = {...initialState, question: this.getDeck().questions[0]};
+      this.setState(state);
     };
 
-    getDeck = () => this.props.deck;
+    getDeck = (): Deck => this.props.deck;
 
     goBack = () => this.props.navigation.goBack();
 
-    resolveText = () => {
-      if (this.state.currentQuestion) {
-        return this.state.showQuestion ? this.state.currentQuestion.question : this.state.currentQuestion.answer
-      } else {
-        return ""
-      }
+    nextQuestion = (answerWasCorrect: boolean) => {
+
     };
 
     buildActions = () => {
@@ -99,32 +87,10 @@ export const QuizContainer = connect((state: CombinedState, selfProps: Props) =>
 
       const toggleView: Action = {
         title: this.showQuestion ? "Show Answer" : "Show Question",
-        onPress: () => {
-          this.setState({showQuestion: !this.state.showQuestion});
-          this.forceUpdate()
-        }
+        onPress: () => this.setState({displayQuestion: !this.state.displayQuestion})
       };
 
       return [correct, incorrect, toggleView]
-    };
-
-    nextQuestion = (isCorrect: boolean) => {
-      const deck = this.getDeck();
-
-      const currentIndex = this.state.currentIndex + 1;
-      const correctAnswers = isCorrect ? this.state.correctAnswers + 1 : this.state.correctAnswers;
-      const progress = (currentIndex + 1) / deck.questions.length;
-      const showQuestion = true;
-      const remainingQuestions = deck.questions.length - currentIndex;
-
-      const isFinished = currentIndex === deck.questions.length;
-      if (isFinished) {
-        Notifications.cancelNotifications().then(() => Notifications.scheduleNotification());
-        this.setState({currentQuestion: undefined, showResults: true, correctAnswers})
-      } else {
-        const currentQuestion = this.getDeck().questions[currentIndex];
-        this.setState({currentQuestion, currentIndex, correctAnswers, progress, showQuestion, remainingQuestions})
-      }
     };
 
     render = () => {
@@ -139,13 +105,10 @@ export const QuizContainer = connect((state: CombinedState, selfProps: Props) =>
       <View style={[Layout.Flex]}>
         <View style={[Layout.Flex]}>
           <View style={[Layout.Flex]}>
-            <Text>{this.resolveText()}</Text>
+            <QuestionView question={this.state.question} displayQuestion={this.state.displayQuestion}/>
           </View>
 
-          <View style={[Layout.Row]}>
-            <Text>{this.state.remainingQuestions}</Text>
-            <ProgressViewIOS progress={this.state.progress} style={Layout.Flex}/>
-          </View>
+          <QuizProgress currentIndex={this.state.currentIndex} questions={this.props.deck.questions}/>
         </View>
 
         <ActionBar actions={this.buildActions()}/>
