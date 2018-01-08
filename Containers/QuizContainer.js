@@ -71,8 +71,14 @@ export const QuizContainer = connect((state: CombinedState, selfProps: Props): R
     goBack = () => this.props.navigation.goBack();
 
     nextQuestion = (answerWasCorrect: boolean) => {
-
+      const numberCorrect = answerWasCorrect ? this.state.numberCorrect + 1 : this.state.numberCorrect;
+      const currentIndex = this.state.currentIndex + 1;
+      const displayQuestion = true;
+      const question = this.getDeck().questions[currentIndex];
+      this.setState({numberCorrect, currentIndex, displayQuestion, question});
     };
+
+    isCompleted = (): boolean => this.state.currentIndex >= this.props.deck.questions.length;
 
     buildActions = () => {
       const correct: Action = {
@@ -93,21 +99,14 @@ export const QuizContainer = connect((state: CombinedState, selfProps: Props): R
       return [correct, incorrect, toggleView]
     };
 
-    render = () => {
-      if (this.state.showResults) {
-        return this.renderCompletion()
-      } else {
-        return this.renderQuestion()
-      }
-    };
+    render = () => this.isCompleted() ? this.renderCompletion() : this.renderQuestion();
 
     renderQuestion = () => (
       <View style={[Layout.Flex]}>
         <View style={[Layout.Flex]}>
-          <View style={[Layout.Flex]}>
+          <View style={Layout.Flex}>
             <QuestionView question={this.state.question} displayQuestion={this.state.displayQuestion}/>
           </View>
-
           <QuizProgress currentIndex={this.state.currentIndex} questions={this.props.deck.questions}/>
         </View>
 
@@ -118,13 +117,10 @@ export const QuizContainer = connect((state: CombinedState, selfProps: Props): R
     renderCompletion = () => (
       <QuizCompletion
         deckName={this.getDeck().title}
-        correctAnswersCount={this.state.correctAnswers}
+        correctAnswersCount={this.state.numberCorrect}
         totalQuestions={this.getDeck().questions.length}
         goBack={this.goBack}
-        restartQuiz={() => {
-          this.restartQuiz();
-          this.forceUpdate()
-        }}
+        restartQuiz={() => this.restartQuiz()}
       />
     )
   }

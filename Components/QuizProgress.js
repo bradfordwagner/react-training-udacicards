@@ -17,6 +17,5 @@ export const QuizProgress = ({currentIndex, questions}: QuizProgressProps) => (
   <View style={[Layout.Row]}>
     <Text>{computeRemainingQuestions(currentIndex, questions)} remaining</Text>
     <ProgressViewIOS progress={computeProgress(currentIndex, questions)} style={Layout.Flex}/>
-
   </View>
 );
