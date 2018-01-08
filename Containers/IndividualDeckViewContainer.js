@@ -46,7 +46,7 @@ export const IndividualDeckViewContainer = connect((state: CombinedState, ownPro
     getDeck = () => this.props.deck;
 
     startQuiz = () => {
-      const params: QuizParams = {deck: this.getDeck()};
+      const params: QuizParams = {deckId: this.getDeck().uuid};
       this.props.navigation.navigate(States.Quiz, params)
     };
 

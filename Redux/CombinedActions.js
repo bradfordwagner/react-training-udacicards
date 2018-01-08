@@ -9,7 +9,7 @@ export const CombinedActions = (dispatch: Dispatch<any>) => ({
   saveDeck: (deck: Deck) => dispatch(saveDeck(deck))
 });
 
-export interface CombinedActionsProps {
+export type CombinedActionsProps = {
   loadDecks(): Promise<any>,
-  saveDeck(deck: Deck): Promise<any>
+  saveDeck(deck: Deck): Promise<any>,
 }
